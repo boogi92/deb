@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Cart";
+}
+
+<table class="table" id="Cart">
+    <thead class="thead-inverse">
+        <tr>
+            <th>#</th>
+            <th>Наименование</th>
+            <th>Количество</th>
+            <th>Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*<tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td></td>
+        </tr>*@
+    </tbody>
+</table>
+
+
+<script>
+    db.transaction(function(tx) {
+        tx.executeSql("select Count(*) from (select COUNT(*) FROM Product GROUP BY Id)", null, function(tx, result) {
+            debugger;
+            document.getElementById('Col').textContent = result.rows[0]['Count(*)'];
+        }, null);
+    });
+
+    var dict = [];
+
+    $(sessionStorage).each(function(i) {
+        var sess = JSON.parse(sessionStorage[i]);
+        var cheak = true;
+
+        $(dict).each(function(i) {
+            if (dict[i].key === sess.Id) {
+                var val = dict[i].value.Value;
+                dict[i].value.Value = parseFloat(val) + (parseFloat(sess.Value) * parseFloat(sess.Col));
+                dict[i].value.Col = parseFloat(dict[i].value.Col) +  parseFloat(sess.Col);
+                cheak = false;
+            }
+        });
+
+        if (cheak) {
+            dict.push({
+                key: sess.Id,
+                value: {
+                    Name: sess.Name,
+                    Col: sess.Col,
+                    Value: parseFloat(sess.Value) * parseFloat(sess.Col)
+                }
+            });
+        }
+
+    });
+
+    var tableRef = document.getElementById('Cart').getElementsByTagName('tbody')[0];
+    var allSum = {};
+
+    $(dict).each(function (i, elem) {
+        var newRow = tableRef.insertRow(tableRef.rows.length);
+        var cell = newRow.insertCell(0);
+        cell.innerHTML = i+1;
+        debugger;
+        var index = 1;
+        for (var p in dict[i].value) {
+            var cell = newRow.insertCell(index);
+            cell.innerHTML = dict[i].value[p];
+            index++;
+        }
+
+        allSum.Sum = allSum.Sum !== undefined ? allSum.Sum + dict[i].value.Value : dict[i].value.Value;
+        allSum.Col = allSum.Col !== undefined ? allSum.Col + dict[i].value.Col : dict[i].value.Col;
+    });
+
+    var newRow = tableRef.insertRow(tableRef.rows.length);
+    var cell = newRow.insertCell(0);
+    cell.innerHTML = "";
+    var cell = newRow.insertCell(1);
+    cell.innerHTML = "Итог";
+    var cell = newRow.insertCell(2);
+    cell.innerHTML = allSum.Col;
+    var cell = newRow.insertCell(3);
+    cell.innerHTML = allSum.Sum;
+
+</script>
+

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -21,9 +23,26 @@ namespace WebApplication1
         {
             Database.OpenSession();
         }
+
         protected void Application_EndRequest()
         {
             Database.CloseSession();
         }
+
+     //   protected void Session_Start(Object sender, EventArgs e)
+     //   {
+     //       SessionStateSection sessionState =
+     //(SessionStateSection)ConfigurationManager.GetSection("system.web/sessionState");
+     //       string sidCookieName = sessionState.CookieName;
+
+     //       if (Request.Cookies[sidCookieName] != null)
+     //       {
+     //           HttpCookie sidCookie = Response.Cookies[sidCookieName];
+     //           sidCookie.Value = Session.SessionID;
+     //           sidCookie.HttpOnly = true;
+     //           sidCookie.Secure = true;
+     //           sidCookie.Path = "/";
+     //       }
+     //   }
     }
 }

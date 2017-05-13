@@ -22,6 +22,8 @@ namespace WebApplication1
             conf.Configure();
             var maper = new ModelMapper();
             maper.AddMapping<ContectMap>();
+            maper.AddMapping<MenuMap>();
+            maper.AddMapping<ProductMap>();
 
             conf.AddMapping(maper.CompileMappingForAllExplicitlyAddedEntities());
 

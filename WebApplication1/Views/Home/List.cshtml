@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "List";
+}
+@model  List<WebApplication1.Models.Product>
+<script>
+    function onPlus(val) {
+        $('input[id='+val+']')[0].value = Number($('input[id='+val+']')[0].value) + 1;
+    };
+    function onMinus(val) {
+        $('input[id='+val+']')[0].value = Number($('input[id='+val+']')[0].value) - 1;
+    };
+
+    function onOrder(val) {
+        db.transaction(function(tx) {
+            tx.executeSql("INSERT INTO Product (Name, Value, Col, Type_Id, Id)  VALUES (?, ?, ?, ?, ?)", 
+            [
+                $('h3[id='+val+']')[0].textContent, 
+                $('p[id=1]')[0].getAttribute('name'), 
+                Number($('input[id='+val+']')[0].value),
+                Number($('input:hidden[id="1"]')[0].value),
+                val
+            ], null, null);
+        });
+        this.Count();
+
+        debugger;
+        sessionStorage.setItem(sessionStorage.length,
+        JSON.stringify({
+            Name: $('h3[id=' + val + ']')[0].textContent,
+            Value: $('p[id=1]')[0].getAttribute('name'),
+            Col: Number($('input[id=' + val + ']')[0].value),
+            Type_Id: Number($('input:hidden[id="1"]')[0].value),
+            Id: val
+
+        }));
+    };
+</script>
+
+<div class="row">
+    @foreach (var item in @Model)
+    {
+
+        <div class="col-sm-6 col-md-2">
+            <div class="thumbnail">
+                @Html.Raw("<img src=\"data:image/jpeg;base64,"
+                          + Convert.ToBase64String(item.Imeg) + "\" />")
+                <div class="caption">
+                    <h3 id="@item.Id">@item.Name</h3>
+                    <p id="@item.Id" name="@item.Value.ToString("##.###")">Цена: @item.Value рублей </p>
+                    <p>
+                        <a href="javascript:;" onclick="onMinus(@item.Id)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </a>
+                        <input style="width: 30px; text-align: center;" type="text" class="span2" value="1" id="@item.Id">
+                        <a href="javascript:;" onclick="onPlus(@item.Id)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </a>
+                        <a href="javascript:;" class="btn btn-default btn-sm" role="button" onclick="onOrder(@item.Id)">Заказ</a>
+                    </p>
+                    <input type="hidden" id="@item.Id" value="@item.Type_id">
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+

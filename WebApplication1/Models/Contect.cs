@@ -1,5 +1,4 @@
-﻿using NHibernate.Bytecode.CodeDom;
-using NHibernate.Mapping.ByCode.Conformist;
+﻿using NHibernate.Mapping.ByCode.Conformist;
 
 namespace WebApplication1.Models
 {
