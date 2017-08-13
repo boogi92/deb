@@ -3,6 +3,7 @@ using System.Web;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping.ByCode;
+using WebApplication1.Mapping;
 using WebApplication1.Models;
 
 namespace WebApplication1
@@ -21,9 +22,11 @@ namespace WebApplication1
             var conf = new Configuration();
             conf.Configure();
             var maper = new ModelMapper();
-            maper.AddMapping<ContectMap>();
+            maper.AddMapping<ContextMap>();
             maper.AddMapping<MenuMap>();
             maper.AddMapping<ProductMap>();
+            maper.AddMapping<OrderMap>();
+            maper.AddMapping<OrderProductMap>();
 
             conf.AddMapping(maper.CompileMappingForAllExplicitlyAddedEntities());
 

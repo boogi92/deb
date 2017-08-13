@@ -12,19 +12,6 @@
     };
 
     function onOrder(val) {
-        db.transaction(function(tx) {
-            tx.executeSql("INSERT INTO Product (Name, Value, Col, Type_Id, Id)  VALUES (?, ?, ?, ?, ?)", 
-            [
-                $('h3[id='+val+']')[0].textContent, 
-                $('p[id=1]')[0].getAttribute('name'), 
-                Number($('input[id='+val+']')[0].value),
-                Number($('input:hidden[id="1"]')[0].value),
-                val
-            ], null, null);
-        });
-        this.Count();
-
-        debugger;
         sessionStorage.setItem(sessionStorage.length,
         JSON.stringify({
             Name: $('h3[id=' + val + ']')[0].textContent,
@@ -54,7 +41,7 @@
                         <a href="javascript:;" onclick="onPlus(@item.Id)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </a>
                         <a href="javascript:;" class="btn btn-default btn-sm" role="button" onclick="onOrder(@item.Id)">Заказ</a>
                     </p>
-                    <input type="hidden" id="@item.Id" value="@item.Type_id">
+                    <input type="hidden" id="@item.Id" value="@item.TypeId">
                 </div>
             </div>
         </div>

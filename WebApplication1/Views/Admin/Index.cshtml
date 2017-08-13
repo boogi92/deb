@@ -1,7 +1,140 @@
-﻿
+﻿@using WebApplication1.Models
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Заказы";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Index</h2>
+@model  List<Order>
+
+<script>
+    $(document).ready(function() {
+        $(".btn.btn-primary.btn-xs").click(function() {
+            debugger;
+
+            $.get("/Admin/Get?id=" + this.id,
+                function(data) {
+                    debugger;
+
+                    document.getElementsByTagName('input').Name.value = data.Name;
+                    document.getElementsByTagName('input').Tell.value = data.Tell;
+                    document.getElementsByTagName('input').Address.value = data.Address;
+                    document.getElementsByTagName('textarea').value = data.Comment;
+                    document.getElementsByTagName('input').Id.value = data.Id;
+
+                    $("#myModal").modal();
+                });
+        });
+
+        $(".save").click(function () {
+            debugger;
+
+            var order = {
+                Name: document.getElementsByTagName('input').Name.value,
+                Tell: document.getElementsByTagName('input').Tell.value,
+                Address: document.getElementsByTagName('input').Address.value,
+                Comment: document.getElementsByTagName('textarea').Comment.value,
+                Id: document.getElementsByTagName('input').Id.value
+            };
+
+            $.ajax({
+                url: '@Url.Action("Update", "Admin")',
+                type: 'POST',
+                data: JSON.stringify({ order: order }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    debugger;
+                    var ths = document.getElementById(data.Id).getElementsByTagName('th');
+                    ths.Name.textContent = data.Name;
+                    ths.Address.textContent = data.Address;
+                }
+            });
+        });
+
+    });
+</script>
+
+<h1 class="text-center container-fluid">ЗАКАЗЫ</h1>
+<div class="col-sm-2"></div>
+<div class="col-sm-9">
+    <table class="table" id="Cart">
+        <thead class="thead-inverse">
+            <tr>
+                <th></th>
+                <th>#</th>
+                <th>Имя</th>
+                <th>Адрис</th>
+                <th>Количество позицый</th>
+                <th style="visibility: hidden;">Id</th>
+            </tr>
+        </thead>
+        <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.Id">
+                        <th><button type="button" class="btn btn-primary btn-xs" id="@item.Id">Open Modal</button></th>
+                        <th>@item.Id</th>
+                        <th name="Name">@item.Name</th>
+                        <th name="Address">@item.Address</th>
+                        <th name="Count">@item.OrderProduct.Count</th>
+                    </tr>
+                }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+
+            <input class="form-control" style="visibility: hidden;" type="text" name="Id">
+            
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Имя</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" placeholder="Имя" name="Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Телефон</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" placeholder="Телефон" name="Tell">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Адресс</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" placeholder="Адресс" name="Address">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Комментарий</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" rows="5" name="Comment"></textarea>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="save btn btn-default" data-dismiss="modal">Сохранить</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
 

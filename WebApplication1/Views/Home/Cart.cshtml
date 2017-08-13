@@ -2,91 +2,148 @@
 @{
     ViewBag.Title = "Cart";
 }
+<h1 class="text-center container-fluid">ОФОРМЛЕНИЕ ЗАКАЗА</h1>
+<div class="col-sm-3"></div>
+    <div class="col-sm-9">
+        <table class="table" id="Cart">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>Наименование</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th style="visibility:hidden;">Type_Id</th>
+                    <th style="visibility:hidden;">Id</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <h2 class="text-center container-fluid">ИНФОРМАЦИЯ О ДОСТАВКЕ</h2>
 
-<table class="table" id="Cart">
-    <thead class="thead-inverse">
-        <tr>
-            <th>#</th>
-            <th>Наименование</th>
-            <th>Количество</th>
-            <th>Цена</th>
-        </tr>
-    </thead>
-    <tbody>
-        @*<tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td></td>
-        </tr>*@
-    </tbody>
-</table>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-5 control-label">Имя</label>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" placeholder="Имя" name="Name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-5 control-label">Телефон</label>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" placeholder="Телефон" name="Tell">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-5 control-label">Адресс</label>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" placeholder="Адресс" name="Address">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-5 control-label">Комментарий</label>
+            <div class="col-sm-7">
+                <textarea class="form-control" rows="5" name="Comment"></textarea>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success center-block">Оформить заказ</button>
+    </form>
 
+    <script>
+        var dict = [];
+        $(sessionStorage).each(function (i) {
+            var sess = JSON.parse(sessionStorage[i]);
+            var cheak = true;
 
-<script>
-    db.transaction(function(tx) {
-        tx.executeSql("select Count(*) from (select COUNT(*) FROM Product GROUP BY Id)", null, function(tx, result) {
-            debugger;
-            document.getElementById('Col').textContent = result.rows[0]['Count(*)'];
-        }, null);
-    });
-
-    var dict = [];
-
-    $(sessionStorage).each(function(i) {
-        var sess = JSON.parse(sessionStorage[i]);
-        var cheak = true;
-
-        $(dict).each(function(i) {
-            if (dict[i].key === sess.Id) {
-                var val = dict[i].value.Value;
-                dict[i].value.Value = parseFloat(val) + (parseFloat(sess.Value) * parseFloat(sess.Col));
-                dict[i].value.Col = parseFloat(dict[i].value.Col) +  parseFloat(sess.Col);
-                cheak = false;
-            }
-        });
-
-        if (cheak) {
-            dict.push({
-                key: sess.Id,
-                value: {
-                    Name: sess.Name,
-                    Col: sess.Col,
-                    Value: parseFloat(sess.Value) * parseFloat(sess.Col)
+            $(dict).each(function (i) {
+                if (dict[i].key === sess.Id) {
+                    var val = dict[i].value.Value;
+                    dict[i].value.Value = parseFloat(val) + (parseFloat(sess.Value) * parseFloat(sess.Col));
+                    dict[i].value.Col = parseFloat(dict[i].value.Col) + parseFloat(sess.Col);
+                    cheak = false;
                 }
             });
-        }
 
-    });
+            if (cheak) {
+                dict.push({
+                    key: sess.Id,
+                    value: {
+                        Name: sess.Name,
+                        Col: sess.Col,
+                        Value: parseFloat(sess.Value) * parseFloat(sess.Col),
+                        Type_Id: sess.Type_Id,
+                        Id: sess.Id
+                    }
+                });
+            }
 
-    var tableRef = document.getElementById('Cart').getElementsByTagName('tbody')[0];
-    var allSum = {};
+        });
 
-    $(dict).each(function (i, elem) {
+        var tableRef = document.getElementById('Cart').getElementsByTagName('tbody')[0];
+        var allSum = {};
+
+        $(dict).each(function (i, elem) {
+            var newRow = tableRef.insertRow(tableRef.rows.length);
+            var cell = newRow.insertCell(0);
+            cell.innerHTML = i + 1;
+            var index = 1;
+            var value = dict[i].value;
+            for (var p in value) {
+                debugger;
+                if (value.hasOwnProperty(p)) {
+                    cell = newRow.insertCell(index);
+                    if (index > 3) {
+                        cell.setAttribute("style", "visibility:hidden;");
+                    }
+                    cell.innerHTML = value[p];
+                    index++;
+                }
+            }
+
+            allSum.Sum = allSum.Sum !== undefined ? allSum.Sum + value.Value : value.Value;
+            allSum.Col = allSum.Col !== undefined ? allSum.Col + value.Col : value.Col;
+        });
+
         var newRow = tableRef.insertRow(tableRef.rows.length);
         var cell = newRow.insertCell(0);
-        cell.innerHTML = i+1;
-        debugger;
-        var index = 1;
-        for (var p in dict[i].value) {
-            var cell = newRow.insertCell(index);
-            cell.innerHTML = dict[i].value[p];
-            index++;
-        }
+        cell.innerHTML = "";
+        var cell = newRow.insertCell(1);
+        cell.innerHTML = "Итог";
+        var cell = newRow.insertCell(2);
+        cell.innerHTML = allSum.Col;
+        var cell = newRow.insertCell(3);
+        cell.innerHTML = allSum.Sum;
 
-        allSum.Sum = allSum.Sum !== undefined ? allSum.Sum + dict[i].value.Value : dict[i].value.Value;
-        allSum.Col = allSum.Col !== undefined ? allSum.Col + dict[i].value.Col : dict[i].value.Col;
-    });
+    </script>
+    <script>
+        $(".btn").click(function () {
+            debugger;
+            var tableRef = document.getElementById('Cart').getElementsByTagName('tbody')[0],
+             products = [],
+             order = {
+                 Name: document.getElementsByName('Name')[0].value,
+                 Tell: document.getElementsByName('Tell')[0].value,
+                 Address: document.getElementsByName('Address')[0].value,
+                 Comment: document.getElementsByName('Comment')[0].value,
+             };
 
-    var newRow = tableRef.insertRow(tableRef.rows.length);
-    var cell = newRow.insertCell(0);
-    cell.innerHTML = "";
-    var cell = newRow.insertCell(1);
-    cell.innerHTML = "Итог";
-    var cell = newRow.insertCell(2);
-    cell.innerHTML = allSum.Col;
-    var cell = newRow.insertCell(3);
-    cell.innerHTML = allSum.Sum;
+            $(tableRef.rows).each(function (i, elem) {
+                if (i + 1 !== tableRef.rows.length)
+                    products.push(tableRef.rows[i].innerText);
+            });
 
-</script>
+            $.ajax({
+                url: '@Url.Action("Cart", "Home")',
+                type: 'POST',
+                data: JSON.stringify({ products: products, order: order }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+
+                }
+            });
+        });
+
+    </script>
 

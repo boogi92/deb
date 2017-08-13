@@ -192,9 +192,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Mig_1.cs" />
-    <Compile Include="Models\Contect.cs" />
-    <Compile Include="Models\Manu.cs" />
+    <Compile Include="Mapping\ContextMap.cs" />
+    <Compile Include="Mapping\OrderProductMap.cs" />
+    <Compile Include="Mapping\OrderMap.cs" />
+    <Compile Include="Mapping\ProductMap.cs" />
+    <Compile Include="Mapping\MenuMap.cs" />
+    <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderProduct.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -222,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
