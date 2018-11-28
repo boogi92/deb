@@ -1,0 +1,34 @@
+[
+    {
+        "Id": 1,
+        "login":"Марья Козырева",
+        "location": "Новосибирск",
+        "UserIcon" :"https://pp.userapi.com/c830408/v830408818/1b519d/qbg6GIMSgI0.jpg",
+        "PostImg" : "https://pp.userapi.com/c850720/v850720224/248cb/7twfvJPxs4Q.jpg",
+        "Text":"Было классно"
+    },
+    {
+        "Id": 2,
+        "login":"Лена Лапина",
+        "location": "Новосибирск",
+        "UserIcon" :"https://pp.userapi.com/c849524/v849524901/a00b4/HwxKk1VziCw.jpg",
+        "PostImg" : "https://pp.userapi.com/c849424/v849424421/c1730/9r6x03GrxLk.jpg",
+        "Text":"Пальмы 😍🌴🌴🌴😍"  
+    },
+    {
+        "Id": 3,
+        "login":"Лена Лапина",
+        "location": "Новосибирск",
+        "UserIcon" :"https://pp.userapi.com/c849524/v849524901/a00b4/HwxKk1VziCw.jpg",
+        "PostImg" : "https://pp.userapi.com/c851420/v851420815/25b69/PQuhc2RRfyw.jpg",
+        "Text":"Мила"  
+    },
+    {
+        "Id": 4,
+        "login":"Лена Лапина",
+        "location": "Новосибирск",
+        "UserIcon" :"https://pp.userapi.com/c849228/v849228415/4575d/oT4MCz3CaQM.jpg",
+        "PostImg" : "https://pp.userapi.com/c837624/v837624937/6e9bd/eXqzy0zhY28.jpg",
+        "Text":"Путешествия -это жизнь ❤Маленькая незабываемая жизнь 🙌🏻😻🌎"  
+    }
+]
