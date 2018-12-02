@@ -1,6 +1,6 @@
 [
     {
-        "Id": 1,
+        "Id": "1",
         "login":"Марья Козырева",
         "location": "Новосибирск",
         "UserIcon" :"https://pp.userapi.com/c830408/v830408818/1b519d/qbg6GIMSgI0.jpg",
@@ -8,7 +8,7 @@
         "Text":"Было классно"
     },
     {
-        "Id": 2,
+        "Id": "2",
         "login":"Лена Лапина",
         "location": "Новосибирск",
         "UserIcon" :"https://pp.userapi.com/c849524/v849524901/a00b4/HwxKk1VziCw.jpg",
@@ -16,7 +16,7 @@
         "Text":"Пальмы"  
     },
     {
-        "Id": 3,
+        "Id": "3",
         "login":"Лена Лапина",
         "location": "Новосибирск",
         "UserIcon" :"https://pp.userapi.com/c849524/v849524901/a00b4/HwxKk1VziCw.jpg",
@@ -24,7 +24,7 @@
         "Text":"Мила"  
     },
     {
-        "Id": 4,
+        "Id": "4",
         "login":"Лена Лапина",
         "location": "Новосибирск",
         "UserIcon" :"https://pp.userapi.com/c849228/v849228415/4575d/oT4MCz3CaQM.jpg",
